@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="mt-5">Psychological questions</h1>
+    <form class="mt-5" method="post" action="{% url 'results' %}">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputName" name="username" required>
+            </div>
+
+            <table class="table table-bordered mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Question</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question in questions %}
+                    <tr>
+                        <th scope="row">{{ question }}</th>
+                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="1" required></td>
+                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="2"></td>
+                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="3"></td>
+                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="4"></td>
+                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="5"></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="form-group-row">
+                <input class="btn btn-lg btn-info" type="submit">
+                <input class="btn btn-lg btn-danger" type="reset">
+            </div>
+    </form>
+{% endblock %}
