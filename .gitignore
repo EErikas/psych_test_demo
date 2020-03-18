@@ -260,4 +260,4 @@ fabric.properties
 results/
 *.xlsx
 venv/
-.idea/
+.idea/*
