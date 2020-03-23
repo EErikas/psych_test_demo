@@ -23,12 +23,18 @@
                 <tbody>
                 {% for question in questions %}
                     <tr>
-                        <th scope="row">{{ question }}</th>
-                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="1" required></td>
-                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="2"></td>
-                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="3"></td>
-                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="4"></td>
-                        <td><input type="radio" name="question_{{ forloop.counter0 }}" value="5"></td>
+                        {% if question %}
+                            {# Print question with options: #}
+                            <th scope="row">{{ question }}</th>
+                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="1" required></td>
+                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="2"></td>
+                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="3"></td>
+                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="4"></td>
+                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="5"></td>
+                        {% else %}
+                            {# Leave a blank line #}
+                            <td colspan="6">{{ question }}</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
