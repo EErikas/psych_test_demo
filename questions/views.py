@@ -1,13 +1,11 @@
 import os
+import json
 import xlsxwriter
 from django.shortcuts import render, redirect
 from psych_test_demo.settings import BASE_DIR
 
-questions = [
-    'I like python',
-    '',
-    'I like Java'
-]
+with open(os.path.join(BASE_DIR, 'questions.json'), 'r', encoding='utf-8') as question_data:
+    questions = json.load(question_data)
 
 
 def show_questions(request):
@@ -19,34 +17,32 @@ def show_questions(request):
 
 
 def generate_file(request):
-    def get_answer(x):
-        answer = request.POST.get('question_{}'.format(x))
-        # Return value of answer if such question exists, otherwise return 0
-        return int(answer) if answer else 0
-
     # Form is submitted via post method:
     if request.method == 'POST':
-
         results_dir = os.path.join(BASE_DIR, 'results')
         if not os.path.exists(results_dir):
             os.mkdir(results_dir)
         file_path = os.path.join(results_dir, '{}-results.xlsx'.format(request.POST['username']))
 
-        answers = [get_answer(i) for i in range(len(questions))]
-        results = list(zip(questions, answers))
+        answers = []
+        for foo in range(len(questions)):
+            answers.append([
+                int(request.POST.get('q_{}_{}'.format(foo, bar)))
+                for bar in range(len(questions[foo].get('quiz_questions')))
+            ])
 
         # Define worksheet and workbook:
         workbook = xlsxwriter.Workbook(file_path)
         worksheet = workbook.add_worksheet()
-        # Define header:
-        worksheet.write(0, 0, 'Question')
-        worksheet.write(0, 1, 'Answer')
-        # Write data to columns:
-        for i in range(len(results)):
-            # If answer is greater than 0 (which means it exists)
-            if results[i][1] > 0:
-                worksheet.write(i + 1, 0, results[i][0])
-                worksheet.write_number(i + 1, 1, results[i][1])
+        col = 0
+        for i in range(len(questions)):
+            worksheet.write(0, col + i, 'Question')
+            worksheet.write(0, col + i + 1, 'Answer')
+            for j in range(len(answers[i])):
+                worksheet.write(j + 1, col + i, questions[i].get('quiz_questions')[j])
+                worksheet.write_number(j + 1, col + i + 1, answers[i][j])
+            col += 1
+
         workbook.close()
 
         return render(request, 'results.html',

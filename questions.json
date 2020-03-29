@@ -1,0 +1,28 @@
+[
+  {
+    "description": "Programming stuff",
+    "option_names": [
+      "Disagree",
+      "Not sure",
+      "Agree"
+    ],
+    "quiz_questions": [
+      "I like python",
+      "I like Java"
+    ]
+  },
+  {
+    "description": "Country stuff",
+    "option_names": [
+      "Hell no",
+      "No",
+      "Don't care",
+      "Yes",
+      "Hell yes"
+    ],
+    "quiz_questions": [
+      "Australia exists",
+      "My backyard is a sovereign country"
+    ]
+  }
+]

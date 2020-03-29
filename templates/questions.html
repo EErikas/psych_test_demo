@@ -1,47 +1,59 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1 class="mt-5">Psychological questions</h1>
-    <form class="mt-5" method="post" action="{% url 'results' %}">
-        {% csrf_token %}
-        <div class="form-group row">
-            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputName" name="username" required>
-            </div>
-
-            <table class="table table-bordered mt-3">
-                <thead>
-                <tr>
-                    <th scope="col">Question</th>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                </tr>
-                </thead>
-                <tbody>
+    {% if questions %}
+        <h1 class="mt-5">Psychological questions</h1>
+        <form class="mt-5" method="post" action="{% url 'results' %}">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputName" name="username" required>
+                </div>
+                {# Iterate through questions: #}
                 {% for question in questions %}
-                    <tr>
-                        {% if question %}
-                            {# Print question with options: #}
-                            <th scope="row">{{ question }}</th>
-                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="1" required></td>
-                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="2"></td>
-                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="3"></td>
-                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="4"></td>
-                            <td><input type="radio" name="question_{{ forloop.counter0 }}" value="5"></td>
-                        {% else %}
-                            {# Leave a blank line #}
-                            <td colspan="6">{{ question }}</td>
-                        {% endif %}
-                    </tr>
+                    {# Set separate varibale for question_id which will be used to track down the question: #}
+                    {% with forloop.counter0 as question_id %}
+                        {# Print description as paragraph #}
+                        <p class="lead mt-3">{{ question.description }}</p>
+                        {# Define new table for quiz questions #}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Question</th>
+                                {# Add all available options to table header #}
+                                {% for option_name in question.option_names %}
+                                    <th class="text-center">{{ option_name }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {# Iterate through quiz questions #}
+                            {% for quiz_question in question.quiz_questions %}
+                                {# Define quiz question id which will be to track down the question: #}
+                                {% with forloop.counter0 as quiz_question_id %}
+                                    <tr>
+                                        <th scope="row">{{ quiz_question }}</th>
+                                        {# Iterate through option names again to list the same number of radio buttons as there are question options #}
+                                        {% for option_name in question.option_names %}
+                                            <td class="text-center">
+                                                {# Each radio button is assigned a unique name that is constructed from question id and quiz question id, value is set by forllop value starting from 1 #}
+                                                <input type="radio" name="q_{{ question_id }}_{{ quiz_question_id }}" value="{{ forloop.counter }}" required>
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endwith %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endwith %}
                 {% endfor %}
-                </tbody>
-            </table>
-            <div class="form-group-row">
-                <input class="btn btn-lg btn-info" type="submit">
-                <input class="btn btn-lg btn-danger" type="reset">
-            </div>
-    </form>
+
+                <div class="form-group-row">
+                    <input class="btn btn-lg btn-info" type="submit">
+                    <input class="btn btn-lg btn-danger" type="reset">
+                </div>
+        </form>
+    {% else %}
+        <h1 class="mt-5">There are no questions, go think of some</h1>
+    {% endif %}
 {% endblock %}
