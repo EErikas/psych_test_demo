@@ -5,6 +5,13 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 
 results_dir = os.path.join(settings.MEDIA_ROOT, 'results')
+# Create media directory if it doesn't exist
+if not os.path.exists(settings.MEDIA_ROOT):
+    os.mkdir(settings.MEDIA_ROOT)
+# Create reulsts directory within media directory if it doesn't exist
+if not os.path.exists(results_dir):
+    os.mkdir(results_dir)
+
 with open(os.path.join(settings.BASE_DIR, 'questions.json'), 'r', encoding='utf-8') as question_data:
     questions = json.load(question_data)
 
@@ -20,8 +27,6 @@ def show_questions(request):
 def generate_file(request):
     # Form is submitted via post method:
     if request.method == 'POST':
-        if not os.path.exists(results_dir):
-            os.mkdir(results_dir)
         file_path = os.path.join(results_dir, '{}-results.xlsx'.format(request.POST['username']))
 
         answers = []
