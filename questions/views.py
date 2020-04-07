@@ -2,7 +2,7 @@ import os
 import json
 import xlsxwriter
 from django.shortcuts import render, redirect
-from psych_test_demo.settings import BASE_DIR
+from django.conf.settings import BASE_DIR
 
 with open(os.path.join(BASE_DIR, 'questions.json'), 'r', encoding='utf-8') as question_data:
     questions = json.load(question_data)
