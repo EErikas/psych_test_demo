@@ -2,9 +2,10 @@ import os
 import json
 import xlsxwriter
 from django.shortcuts import render, redirect
-from django.conf.settings import BASE_DIR
+from django.conf import settings
 
-with open(os.path.join(BASE_DIR, 'questions.json'), 'r', encoding='utf-8') as question_data:
+results_dir = os.path.join(settings.MEDIA_ROOT, 'results')
+with open(os.path.join(settings.BASE_DIR, 'questions.json'), 'r', encoding='utf-8') as question_data:
     questions = json.load(question_data)
 
 
@@ -19,7 +20,6 @@ def show_questions(request):
 def generate_file(request):
     # Form is submitted via post method:
     if request.method == 'POST':
-        results_dir = os.path.join(BASE_DIR, 'results')
         if not os.path.exists(results_dir):
             os.mkdir(results_dir)
         file_path = os.path.join(results_dir, '{}-results.xlsx'.format(request.POST['username']))
@@ -52,3 +52,8 @@ def generate_file(request):
                       })
     # If url is accessed without post data, redirect to questions page:
     return redirect('questions')
+
+
+def show_files(request):
+    files = os.listdir(results_dir)
+    return render(request, 'files.html', context={'files': files})

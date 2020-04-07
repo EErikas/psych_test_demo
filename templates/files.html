@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="mt-5">Results results files</h1>
+    <p class="lead">Here you can see and download all result files</p>
+    <ul>
+        {% for file in files %}
+            <li>
+                <a href="/media/results/{{ file }}">{{ file }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
