@@ -1,5 +1,5 @@
 # psych_test_demo
-Demo Django web app, which provides user with a test with multiple options and then exports users answers to .xlsx file on the server
+Demo Django web app, which provides user with a test with multiple options and then exports users answers to .xlsx file on the server. Link to the live implementation of this project: Project is based on one of my older project: <https://ptdemo.pythonanywhere.com>
 
 # Staring the application
 1. Open terminal command line prompt
