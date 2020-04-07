@@ -19,7 +19,7 @@ with open(os.path.join(settings.BASE_DIR, 'questions.json'), 'r', encoding='utf-
 def show_questions(request):
     return render(request, 'questions.html',
                   context={
-                      'title': 'Questions_test',
+                      'title': 'Test',
                       'questions': questions
                   })
 
@@ -60,4 +60,8 @@ def generate_file(request):
 
 
 def show_files(request):
-    return render(request, 'files.html', context={'files': os.listdir(results_dir)})
+    return render(request, 'files.html',
+                  context={
+                      'title': 'Results',
+                      'files': os.listdir(results_dir)
+                  })

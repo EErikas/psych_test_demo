@@ -2,11 +2,15 @@
 {% block content %}
     <h1 class="mt-5">Results results files</h1>
     <p class="lead">Here you can see and download all result files</p>
-    <ul>
-        {% for file in files %}
-            <li>
-                <a href="/media/results/{{ file }}">{{ file }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if files %}
+        <ul>
+            {% for file in files %}
+                <li>
+                    <a href="/media/results/{{ file }}">{{ file }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2 class="mt-5">There are no files</h2>
+    {% endif %}
 {% endblock %}
