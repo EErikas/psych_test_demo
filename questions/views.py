@@ -60,5 +60,4 @@ def generate_file(request):
 
 
 def show_files(request):
-    files = os.listdir(results_dir)
-    return render(request, 'files.html', context={'files': files})
+    return render(request, 'files.html', context={'files': os.listdir(results_dir)})
