@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 import xlsxwriter
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -8,7 +9,7 @@ results_dir = os.path.join(settings.MEDIA_ROOT, 'results')
 # Create media directory if it doesn't exist
 if not os.path.exists(settings.MEDIA_ROOT):
     os.mkdir(settings.MEDIA_ROOT)
-# Create reulsts directory within media directory if it doesn't exist
+# Create results directory within media directory if it doesn't exist
 if not os.path.exists(results_dir):
     os.mkdir(results_dir)
 
@@ -27,7 +28,10 @@ def show_questions(request):
 def generate_file(request):
     # Form is submitted via post method:
     if request.method == 'POST':
-        file_path = os.path.join(results_dir, '{}-results.xlsx'.format(request.POST['username']))
+        file_name = '{}-results-{}.xlsx'.format(
+            request.POST['username'],
+            datetime.now().strftime("%Y%m%d_%H%M%S"))
+        file_path = os.path.join(results_dir, file_name)
 
         answers = []
         for foo in range(len(questions)):
@@ -53,7 +57,7 @@ def generate_file(request):
         return render(request, 'results.html',
                       context={
                           'title': 'Quiz results',
-                          'file': file_path
+                          'file': file_name
                       })
     # If url is accessed without post data, redirect to questions page:
     return redirect('questions')

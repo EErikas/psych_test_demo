@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1 class="mt-5">Results saved</h1>
-{#    <p class="lead">Your results have been saved to <b>{{ file }}</b></p>#}
+    <p class="lead">Your can download your results by clicking <a href="/media/results/{{ file }}">here</a></p>
     <p class="lead"><a href="{% url 'questions' %}">Take a quiz again</a></p>
 {% endblock %}
